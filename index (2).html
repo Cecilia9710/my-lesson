@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苏东坡生平脉络</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8E44AD',
+                        secondary: '#3498DB',
+                        success: '#2ECC71',
+                        warning: '#F39C12',
+                        danger: '#E74C3C',
+                        info: '#1ABC9C',
+                        light: '#F8F9FA',
+                        dark: '#343A40',
+                        'paper': '#F5F1E6',
+                        'ink': '#333333',
+                        'accent': '#D4AC0D',
+                        'poetry': '#7D8C4B',
+                        'politics': '#A6ACAF',
+                        'life': '#9B59B6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        cursive: ['"Ma Shan Zheng"', 'cursive']
+                    },
+                    boxShadow: {
+                        'scroll': 'inset 0 -10px 10px -10px rgba(0, 0, 0, 0.3)'
+                    },
+                    backgroundImage: {
+                        'paper-texture': "url('https://img.freepik.com/free-photo/old-paper-texture_1194-6120.jpg')"
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            .timeline-dot {
+                @apply w-6 h-6 rounded-full border-4 border-paper z-10 flex items-center justify-center;
+            }
+            .timeline-dot::after {
+                content: '';
+                @apply absolute w-3 h-3 rounded-full;
+            }
+            .timeline-line {
+                @apply absolute left-3 top-6 bottom-0 w-0.5 bg-gray-300 z-0;
+            }
+            .event-card {
+                @apply relative pl-12 pb-8 cursor-pointer transition-all duration-300;
+            }
+            .event-card:hover {
+                @apply pl-14;
+            }
+            .event-content {
+                @apply bg-white bg-opacity-80 rounded-lg shadow-md p-4 border-l-4 transition-all duration-300;
+            }
+            .event-card:hover .event-content {
+                @apply shadow-lg;
+            }
+            .category-politics {
+                @apply border-politics;
+            }
+            .category-poetry {
+                @apply border-poetry;
+            }
+            .category-life {
+                @apply border-life;
+            }
+            .category-other {
+                @apply border-info;
+            }
+            .poem-highlight {
+                @apply italic text-poetry font-serif;
+            }
+            .year-label {
+                @apply absolute -left-24 top-1 w-20 text-right text-sm font-bold text-gray-600;
+            }
+            .map-container {
+                @apply relative h-96 bg-paper rounded-lg shadow-lg overflow-hidden;
+            }
+            .map-marker {
+                @apply absolute w-4 h-4 bg-danger rounded-full shadow-lg cursor-pointer transition-transform hover:scale-150;
+                transform-origin: center bottom;
+            }
+            .map-marker::after {
+                content: '';
+                @apply absolute w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent border-t-danger -bottom-4 left-1/2 transform -translate-x-1/2;
+            }
+            .map-line {
+                @apply absolute h-0.5 bg-gray-400 z-0;
+                transform-origin: left center;
+            }
+            .tab-content {
+                display: none;
+            }
+            .tab-content.active {
+                display: block;
+            }
+            .tab-button {
+                @apply px-4 py-2 rounded-t-lg font-medium transition-all duration-300;
+            }
+            .tab-button.active {
+                @apply bg-white text-primary border-b-2 border-primary;
+            }
+            .scroll-indicator {
+                @apply absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce text-gray-500;
+            }
+            .paper-bg {
+                background-color: #F5F1E6;
+                background-image: url('https://img.freepik.com/free-photo/old-paper-texture_1194-6120.jpg');
+                background-size: cover;
+                background-blend-mode: overlay;
+            }
+            .ink-text {
+                color: #333333;
+                text-shadow: 0.5px 0.5px 0px rgba(255,255,255,0.8);
+            }
+            .highlight-text {
+                @apply text-accent font-bold;
+            }
+            .custom-tooltip {
+                @apply absolute bg-white p-2 rounded shadow-lg text-sm z-50 max-w-xs;
+                display: none;
+            }
+        }
+    </style>
+    <!-- 引入Google字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="paper-bg min-h-screen font-sans ink-text">
+    <!-- 顶部导航 -->
+    <header class="bg-white bg-opacity-90 shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <h1 class="text-3xl font-cursive text-primary mr-2">苏东坡</h1>
+                <span class="text-xl text-gray-600">生平脉络</span>
+            </div>
+            <nav>
+                <ul class="flex space-x-1 md:space-x-4">
+                    <li><button id="timeline-tab" class="tab-button active" onclick="switchTab('timeline')">生平时间轴</button></li>
+                    <li><button id="works-tab" class="tab-button" onclick="switchTab('works')">代表作品</button></li>
+                    <li><button id="map-tab" class="tab-button" onclick="switchTab('map')">足迹地图</button></li>
+                    <li><button id="about-tab" class="tab-button" onclick="switchTab('about')">关于</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 生平时间轴 -->
+        <section id="timeline-content" class="tab-content active">
+            <div class="mb-8 text-center">
+                <h2 class="text-4xl font-serif font-bold mb-4">苏东坡生平时间轴</h2>
+                <p class="text-lg max-w-3xl mx-auto">从眉州出生到常州病逝，展现苏东坡跌宕起伏的一生</p>
+            </div>
+
+            <!-- 时间轴筛选器 -->
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-primary text-white" data-filter="all">全部</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-politics bg-opacity-20" data-filter="politics">政治生涯</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-poetry bg-opacity-20" data-filter="poetry">文学创作</button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-life bg-opacity-20" data-filter="life">人生变故</button>
+            </div>
+
+            <!-- 时间轴 -->
+            <div class="timeline-container relative pl-8 md:pl-12 lg:pl-24">
+                <!-- 时间轴线 -->
+                <div class="absolute left-3 top-0 bottom-0 w-0.5 bg-gray-300 z-0"></div>
+                
+                <!-- 时间轴事件将通过JavaScript动态生成 -->
+                <div id="timeline-events" class="space-y-0">
+                    <!-- 事件将在这里动态插入 -->
+                </div>
+            </div>
+
+            <!-- 滚动指示器 -->
+            <div class="scroll-indicator">
+                <i class="fa fa-angle-down text-2xl"></i>
+            </div>
+        </section>
+
+        <!-- 代表作品 -->
+        <section id="works-content" class="tab-content">
+            <div class="mb-8 text-center">
+                <h2 class="text-4xl font-serif font-bold mb-4">苏东坡代表作品</h2>
+                <p class="text-lg max-w-3xl mx-auto">精选苏东坡不同时期的代表作品，展现其文学成就</p>
+            </div>
+
+            <!-- 作品分类标签 -->
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button class="work-filter-btn active px-4 py-2 rounded-full bg-primary text-white" data-filter="all">全部</button>
+                <button class="work-filter-btn px-4 py-2 rounded-full bg-poetry bg-opacity-20" data-filter="poem">诗词</button>
+                <button class="work-filter-btn px-4 py-2 rounded-full bg-info bg-opacity-20" data-filter="prose">散文</button>
+            </div>
+
+            <!-- 作品展示区 -->
+            <div id="works-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 作品卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+
+        <!-- 足迹地图 -->
+        <section id="map-content" class="tab-content">
+            <div class="mb-8 text-center">
+                <h2 class="text-4xl font-serif font-bold mb-4">苏东坡生平足迹</h2>
+                <p class="text-lg max-w-3xl mx-auto">跟随苏东坡的足迹，了解其一生的迁徙与游历</p>
+            </div>
+
+            <!-- 地图控制 -->
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button class="map-period-btn active px-4 py-2 rounded-full bg-primary text-white" data-period="all">全部时期</button>
+                <button class="map-period-btn px-4 py-2 rounded-full bg-info bg-opacity-20" data-period="early">早期（1037-1071）</button>
+                <button class="map-period-btn px-4 py-2 rounded-full bg-warning bg-opacity-20" data-period="middle">中期（1071-1089）</button>
+                <button class="map-period-btn px-4 py-2 rounded-full bg-danger bg-opacity-20" data-period="late">晚期（1089-1101）</button>
+            </div>
+
+            <!-- 地图展示区 -->
+            <div class="map-container mb-8 h-[600px]">
+                <div id="map" class="w-full h-full rounded-lg shadow-lg"></div>
+            </div>
+
+            <!-- 地点时间轴 -->
+            <div class="bg-white bg-opacity-80 rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-serif font-bold mb-4">重要地点时间轴</h3>
+                <div id="location-timeline" class="space-y-4">
+                    <!-- 地点时间轴将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于 -->
+        <section id="about-content" class="tab-content">
+            <div class="mb-8 text-center">
+                <h2 class="text-4xl font-serif font-bold mb-4">关于苏东坡</h2>
+                <p class="text-lg max-w-3xl mx-auto">了解这位北宋文坛巨匠的生平和成就</p>
+            </div>
+
+            <!-- 人物简介 -->
+            <div class="bg-white bg-opacity-80 rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-2xl font-serif font-bold mb-4">人物简介</h3>
+                <p class="mb-4">苏轼（1037年1月8日—1101年8月24日），字子瞻，又字和仲，号东坡居士、铁冠道人，世称苏东坡、苏仙、坡仙。眉州眉山（今四川省眉山市）人，北宋文学家、书法家、画家，唐宋八大家之一，与其父苏洵、其弟苏辙合称"三苏"。</p>
+                <p class="mb-4">苏轼是北宋中期文坛领袖，在诗、词、文、书、画等方面取得很高成就。其诗题材广阔，清新豪健，善用夸张比喻，独具风格，与黄庭坚并称"苏黄"；其词开豪放一派，与辛弃疾同是豪放派代表，并称"苏辛"；其文著述宏富，纵横恣肆，豪放自如，与欧阳修并称"欧苏"，为"唐宋八大家"之一。苏轼善书，"宋四家"之一；擅长文人画，尤擅墨竹、怪石、枯木等。</p>
+                <p>作品有《东坡七集》《东坡易传》《东坡乐府》《潇湘竹石图》《枯木怪石图》等。</p>
+            </div>
+
+            <!-- 主要成就 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white bg-opacity-80 rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-serif font-bold mb-4">文学成就</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>诗歌：题材广泛，清新豪健，与黄庭坚并称"苏黄"</li>
+                        <li>词作：开豪放一派，与辛弃疾并称"苏辛"</li>
+                        <li>散文：纵横恣肆，豪放自如，与欧阳修并称"欧苏"</li>
+                        <li>文学理论：提出"文以载道"、"辞达而已矣"等观点</li>
+                    </ul>
+                </div>
+                <div class="bg-white bg-opacity-80 rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-serif font-bold mb-4">艺术成就</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>书法：擅长行书、楷书，"宋四家"之一</li>
+                        <li>绘画：擅长墨竹、怪石、枯木等，提倡"诗画本一律"</li>
+                        <li>书法作品：《黄州寒食诗帖》《前赤壁赋》等</li>
+                        <li>绘画作品：《潇湘竹石图》《枯木怪石图》等</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 后世影响 -->
+            <div class="bg-white bg-opacity-80 rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-serif font-bold mb-4">后世影响</h3>
+                <p class="mb-4">苏轼的文学成就对后世产生了深远影响。他的诗词文章被广泛传播，成为中国文学史上的经典。他的豪放词风影响了辛弃疾等南宋词人，形成了豪放派词的主流。他的散文风格被后世文人所推崇，成为唐宋古文运动的重要成果。</p>
+                <p class="mb-4">苏轼的艺术成就也对后世产生了重要影响。他的书法被后世书法家所学习和模仿，成为宋代书法的代表。他的绘画理论和实践对文人画的发展产生了深远影响，推动了中国传统绘画的发展。</p>
+                <p>苏轼的人格魅力和精神境界也为后世所称道。他一生屡遭贬谪，但始终保持乐观豁达的心态，这种精神境界成为中国文人的典范。他的"不以物喜，不以己悲"的人生态度和"一蓑烟雨任平生"的洒脱精神，影响了无数后人。</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-cursive text-primary mb-2">苏东坡生平脉络</h3>
+                    <p class="text-gray-400">一个展示苏东坡生平的交互式时间轴</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-github text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-twitter text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa fa-weibo text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-4 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2026 苏东坡生平脉络 | 本项目仅供学习和研究使用</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 自定义提示框 -->
+    <div id="custom-tooltip" class="custom-tooltip"></div>
+
+    <script>
+        // 时间轴数据
+        const timelineData = [
+            {
+                year: "1037年1月8日",
+                title: "苏轼出生",
+                description: "苏轼出生于眉州眉山（今四川省眉山市）城内纱縠行苏宅。字子瞻，又字和仲，号东坡居士。",
+                category: "life",
+                location: "四川眉山",
+                coordinates: { x: 75, y: 45 }
+            },
+            {
+                year: "1056年",
+                title: "首次出蜀赴京",
+                description: "苏轼与父亲苏洵、弟弟苏辙一同出蜀赴京应试，途经阆中、凤翔、长安、渑池等地。",
+                category: "politics",
+                location: "四川眉山至河南开封",
+                coordinates: { x: 75, y: 45 }
+            },
+            {
+                year: "1057年",
+                title: "进士及第",
+                description: "苏轼与苏辙同科进士及第。苏轼应试之作《刑赏忠厚之至论》，深得欧阳修、梅尧臣等奖誉。",
+                category: "politics",
+                location: "河南开封",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1057年",
+                title: "母亲病逝",
+                description: "苏轼的母亲程夫人病逝，父子三人仓促返眉奔丧。",
+                category: "life",
+                location: "四川眉山",
+                coordinates: { x: 75, y: 45 }
+            },
+            {
+                year: "1059年",
+                title: "《南行集》",
+                description: "苏轼父子三人携家眷东出巫峡北上汴京，一路交朋会友、作诗唱和，汇成《南行集》。",
+                category: "poetry",
+                location: "四川眉山至河南开封",
+                coordinates: { x: 75, y: 45 }
+            },
+            {
+                year: "1061年",
+                title: "制科考试",
+                description: "苏轼参加宋仁宗主持的'贤良方正能直言极谏'制科考试，取为第三等（实为一等）。",
+                category: "politics",
+                location: "河南开封",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1061年",
+                title: "凤翔签判",
+                description: "苏轼任大理评事、凤翔府签判，年底到任，作诗《和子由渑池怀旧》。",
+                category: "politics",
+                location: "陕西凤翔",
+                coordinates: { x: 80, y: 30 }
+            },
+            {
+                year: "1065年",
+                title: "妻子病逝",
+                description: "苏轼的妻子王弗卒于京师，终年27岁。",
+                category: "life",
+                location: "河南开封",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1066年",
+                title: "父亲病逝",
+                description: "苏洵病逝于京师，享年58岁。苏轼兄弟扶丧回眉。",
+                category: "life",
+                location: "河南开封至四川眉山",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1068年",
+                title: "续娶王闰之",
+                description: "苏轼续娶王弗堂妹王闰之。",
+                category: "life",
+                location: "四川眉山",
+                coordinates: { x: 75, y: 45 }
+            },
+            {
+                year: "1071年",
+                title: "杭州通判",
+                description: "苏轼因反对王安石新法，自请外放，任杭州通判。",
+                category: "politics",
+                location: "浙江杭州",
+                coordinates: { x: 90, y: 40 }
+            },
+            {
+                year: "1073年",
+                title: "《饮湖上初晴后雨》",
+                description: "苏轼在杭州任上作《饮湖上初晴后雨》：'欲把西湖比西子，淡妆浓抹总相宜。'",
+                category: "poetry",
+                location: "浙江杭州",
+                coordinates: { x: 90, y: 40 }
+            },
+            {
+                year: "1074年",
+                title: "密州知州",
+                description: "苏轼调任密州（今山东诸城）知州。",
+                category: "politics",
+                location: "山东诸城",
+                coordinates: { x: 88, y: 25 }
+            },
+            {
+                year: "1075年",
+                title: "《江城子·记梦》",
+                description: "苏轼作《江城子·记梦》悼亡妻王弗：'十年生死两茫茫，不思量，自难忘。'",
+                category: "poetry",
+                location: "山东诸城",
+                coordinates: { x: 88, y: 25 }
+            },
+            {
+                year: "1075年",
+                title: "《江城子·密州出猎》",
+                description: "苏轼作《江城子·密州出猎》：'老夫聊发少年狂，左牵黄，右擎苍。'",
+                category: "poetry",
+                location: "山东诸城",
+                coordinates: { x: 88, y: 25 }
+            },
+            {
+                year: "1076年",
+                title: "《水调歌头·明月几时有》",
+                description: "苏轼作《水调歌头·明月几时有》：'但愿人长久，千里共婵娟。'",
+                category: "poetry",
+                location: "山东诸城",
+                coordinates: { x: 88, y: 25 }
+            },
+            {
+                year: "1077年",
+                title: "徐州知州",
+                description: "苏轼调任徐州知州。八月，黄河决堤水困徐州，苏轼亲率军民抗洪保城。",
+                category: "politics",
+                location: "江苏徐州",
+                coordinates: { x: 85, y: 30 }
+            },
+            {
+                year: "1079年",
+                title: "湖州知州",
+                description: "苏轼调任湖州知州。在任仅三月即因'乌台诗案'被逮。",
+                category: "politics",
+                location: "浙江湖州",
+                coordinates: { x: 88, y: 38 }
+            },
+            {
+                year: "1079年",
+                title: "乌台诗案",
+                description: "苏轼因'乌台诗案'被捕下狱，贬黄州团练副使。",
+                category: "politics",
+                location: "河南开封至湖北黄冈",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1080年",
+                title: "东坡居士",
+                description: "苏轼抵达黄州，寓居定惠院、临皋亭，后垦荒东坡，自号'东坡居士'。",
+                category: "life",
+                location: "湖北黄冈",
+                coordinates: { x: 82, y: 40 }
+            },
+            {
+                year: "1082年",
+                title: "《寒食诗》",
+                description: "苏轼作《寒食诗》，被誉为'天下第三行书'。",
+                category: "poetry",
+                location: "湖北黄冈",
+                coordinates: { x: 82, y: 40 }
+            },
+            {
+                year: "1082年",
+                title: "《前赤壁赋》《后赤壁赋》",
+                description: "苏轼作《前赤壁赋》《后赤壁赋》，表达其豁达的人生态度。",
+                category: "poetry",
+                location: "湖北黄冈",
+                coordinates: { x: 82, y: 40 }
+            },
+            {
+                year: "1084年",
+                title: "《念奴娇·赤壁怀古》",
+                description: "苏轼作《念奴娇·赤壁怀古》：'大江东去，浪淘尽，千古风流人物。'",
+                category: "poetry",
+                location: "湖北黄冈",
+                coordinates: { x: 82, y: 40 }
+            },
+            {
+                year: "1085年",
+                title: "登州知州",
+                description: "宋神宗病逝后，苏轼被重新启用任登州知州，到任不久便被召还入朝。",
+                category: "politics",
+                location: "山东蓬莱",
+                coordinates: { x: 90, y: 20 }
+            },
+            {
+                year: "1086年",
+                title: "翰林学士",
+                description: "苏轼被召还入朝，先后升任为礼部郎中、起居舍人、中书舍人、翰林学士。",
+                category: "politics",
+                location: "河南开封",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1089年",
+                title: "杭州知州",
+                description: "苏轼外任杭州知州，疏浚西湖，筑苏堤。",
+                category: "politics",
+                location: "浙江杭州",
+                coordinates: { x: 90, y: 40 }
+            },
+            {
+                year: "1092年",
+                title: "礼部尚书",
+                description: "苏轼再次被召还入朝，相继出任兵部尚书、礼部尚书。",
+                category: "politics",
+                location: "河南开封",
+                coordinates: { x: 85, y: 35 }
+            },
+            {
+                year: "1093年",
+                title: "定州知州",
+                description: "宋哲宗亲政，批准了苏轼求出知边郡重镇的请求，命苏轼任定州知州。",
+                category: "politics",
+                location: "河北定州",
+                coordinates: { x: 87, y: 22 }
+            },
+            {
+                year: "1094年",
+                title: "贬惠州",
+                description: "章惇、安焘等变法派人士上台执政，苏轼被贬为惠州安置。",
+                category: "politics",
+                location: "广东惠州",
+                coordinates: { x: 80, y: 60 }
+            },
+            {
+                year: "1097年",
+                title: "贬儋州",
+                description: "苏轼再次被贬为琼州别驾，昌化军（儋州）安置。渡海居儋，办学兴教。",
+                category: "politics",
+                location: "海南儋州",
+                coordinates: { x: 75, y: 70 }
+            },
+            {
+                year: "1100年",
+                title: "量移廉州",
+                description: "宋徽宗即位大赦天下，苏轼量移廉州（今广西合浦）。",
+                category: "politics",
+                location: "广西合浦",
+                coordinates: { x: 78, y: 65 }
+            },
+            {
+                year: "1101年",
+                title: "北返病逝",
+                description: "苏轼北返，于建中靖国元年七月二十八日（1101年8月24日）病逝于常州，享年66岁。",
+                category: "life",
+                location: "江苏常州",
+                coordinates: { x: 87, y: 35 }
+            }
+        ];
+
+        // 代表作品数据
+        const worksData = [
+            {
+                title: "《刑赏忠厚之至论》",
+                year: "1057年",
+                type: "prose",
+                description: "苏轼应试之作，深得欧阳修、梅尧臣等奖誉，首次公开发表其以仁治国的政治主张。",
+                excerpt: "以君子长者之道待天下，使天下相率而归于君子长者之道。故曰：忠厚之至也。",
+                location: "河南开封"
+            },
+            {
+                title: "《和子由渑池怀旧》",
+                year: "1061年",
+                type: "poem",
+                description: "苏轼赴凤翔任途中所作，表达对人生无常的感慨和对弟弟苏辙的思念。",
+                excerpt: "人生到处知何似，应似飞鸿踏雪泥。泥上偶然留指爪，鸿飞那复计东西。",
+                location: "陕西凤翔"
+            },
+            {
+                title: "《饮湖上初晴后雨》",
+                year: "1073年",
+                type: "poem",
+                description: "苏轼在杭州任上所作，描绘西湖美景，被誉为描写西湖的千古绝唱。",
+                excerpt: "水光潋滟晴方好，山色空蒙雨亦奇。欲把西湖比西子，淡妆浓抹总相宜。",
+                location: "浙江杭州"
+            },
+            {
+                title: "《江城子·记梦》",
+                year: "1075年",
+                type: "poem",
+                description: "苏轼为悼念亡妻王弗所作，情感真挚，感人至深。",
+                excerpt: "十年生死两茫茫，不思量，自难忘。千里孤坟，无处话凄凉。",
+                location: "山东诸城"
+            },
+            {
+                title: "《江城子·密州出猎》",
+                year: "1075年",
+                type: "poem",
+                description: "苏轼在密州任上所作，展现其豪放词风。",
+                excerpt: "老夫聊发少年狂，左牵黄，右擎苍，锦帽貂裘，千骑卷平冈。",
+                location: "山东诸城"
+            },
+            {
+                title: "《水调歌头·明月几时有》",
+                year: "1076年",
+                type: "poem",
+                description: "苏轼在密州任上所作，表达对亲人的思念和对人生的思考。",
+                excerpt: "但愿人长久，千里共婵娟。",
+                location: "山东诸城"
+            },
+            {
+                title: "《寒食诗》",
+                year: "1082年",
+                type: "poem",
+                description: "苏轼在黄州所作，被誉为'天下第三行书'。",
+                excerpt: "自我来黄州，已过三寒食。年年欲惜春，春去不容惜。",
+                location: "湖北黄冈"
+            },
+            {
+                title: "《前赤壁赋》",
+                year: "1082年",
+                type: "prose",
+                description: "苏轼在黄州所作，表达其豁达的人生态度。",
+                excerpt: "寄蜉蝣于天地，渺沧海之一粟。哀吾生之须臾，羡长江之无穷。",
+                location: "湖北黄冈"
+            },
+            {
+                title: "《后赤壁赋》",
+                year: "1082年",
+                type: "prose",
+                description: "苏轼在黄州所作，是《前赤壁赋》的姊妹篇。",
+                excerpt: "山高月小，水落石出。曾日月之几何，而江山不可复识矣。",
+                location: "湖北黄冈"
+            },
+            {
+                title: "《念奴娇·赤壁怀古》",
+                year: "1084年",
+                type: "poem",
+                description: "苏轼在黄州所作，是豪放词的代表作。",
+                excerpt: "大江东去，浪淘尽，千古风流人物。故垒西边，人道是，三国周郎赤壁。",
+                location: "湖北黄冈"
+            },
+            {
+                title: "《定风波·莫听穿林打叶声》",
+                year: "1082年",
+                type: "poem",
+                description: "苏轼在黄州所作，表达其豁达的人生态度。",
+                excerpt: "竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。",
+                location: "湖北黄冈"
+            },
+            {
+                title: "《记承天寺夜游》",
+                year: "1083年",
+                type: "prose",
+                description: "苏轼在黄州所作，是其小品文的代表作。",
+                excerpt: "庭下如积水空明，水中藻荇交横，盖竹柏影也。何夜无月？何处无竹柏？但少闲人如吾两人者耳。",
+                location: "湖北黄冈"
+            }
+        ];
+
+        // 地点数据（使用真实地理坐标）
+        const locationData = [
+            {
+                name: "眉山",
+                description: "苏轼出生地，青少年时期生活的地方",
+                period: "early",
+                coordinates: [103.823557, 30.017865], // 真实地理坐标
+                events: [
+                    { year: "1037年", event: "苏轼出生" },
+                    { year: "1056年", event: "首次出蜀赴京" },
+                    { year: "1057年", event: "母亲程夫人病逝，返眉奔丧" },
+                    { year: "1066年", event: "扶父柩回眉安葬" },
+                    { year: "1068年", event: "续娶王闰之" }
+                ]
+            },
+            {
+                name: "开封",
+                description: "北宋都城，苏轼多次在此任职",
+                period: "all",
+                coordinates: [114.305469, 34.765230], // 真实地理坐标
+                events: [
+                    { year: "1057年", event: "进士及第" },
+                    { year: "1061年", event: "制科考试，取为第三等" },
+                    { year: "1065年", event: "妻子王弗卒于京师" },
+                    { year: "1066年", event: "父亲苏洵病逝于京师" },
+                    { year: "1086年", event: "任翰林学士" },
+                    { year: "1092年", event: "任礼部尚书" },
+                    { year: "1079年", event: "乌台诗案被捕下狱" }
+                ]
+            },
+            {
+                name: "凤翔",
+                description: "苏轼首次任官之地",
+                period: "early",
+                coordinates: [107.383333, 34.533333], // 真实地理坐标
+                events: [
+                    { year: "1061年", event: "任凤翔府签判" },
+                    { year: "1061年", event: "作《和子由渑池怀旧》" }
+                ]
+            },
+            {
+                name: "杭州",
+                description: "苏轼两次在此任职，疏浚西湖，筑苏堤",
+                period: "middle",
+                coordinates: [120.155152, 30.274146], // 真实地理坐标
+                events: [
+                    { year: "1071年", event: "任杭州通判" },
+                    { year: "1073年", event: "作《饮湖上初晴后雨》" },
+                    { year: "1089年", event: "任杭州知州，疏浚西湖，筑苏堤" }
+                ]
+            },
+            {
+                name: "密州",
+                description: "苏轼任知州之地，创作了多篇重要作品",
+                period: "middle",
+                coordinates: [119.454305, 35.997945], // 山东诸城，真实地理坐标
+                events: [
+                    { year: "1074年", event: "任密州知州" },
+                    { year: "1075年", event: "作《江城子·记梦》悼亡妻" },
+                    { year: "1075年", event: "作《江城子·密州出猎》" },
+                    { year: "1076年", event: "作《水调歌头·明月几时有》" }
+                ]
+            },
+            {
+                name: "徐州",
+                description: "苏轼任知州之地，曾率军民抗洪保城",
+                period: "middle",
+                coordinates: [117.200983, 34.263161], // 真实地理坐标
+                events: [
+                    { year: "1077年", event: "任徐州知州" },
+                    { year: "1077年", event: "率军民抗洪保城" }
+                ]
+            },
+            {
+                name: "黄州",
+                description: "苏轼贬谪之地，自号'东坡居士'，创作了大量重要作品",
+                period: "middle",
+                coordinates: [114.878994, 30.443643], // 湖北黄冈，真实地理坐标
+                events: [
+                    { year: "1080年", event: "贬黄州团练副使，自号'东坡居士'" },
+                    { year: "1082年", event: "作《寒食诗》" },
+                    { year: "1082年", event: "作《前赤壁赋》《后赤壁赋》" },
+                    { year: "1082年", event: "作《定风波·莫听穿林打叶声》" },
+                    { year: "1083年", event: "作《记承天寺夜游》" },
+                    { year: "1084年", event: "作《念奴娇·赤壁怀古》" }
+                ]
+            },
+            {
+                name: "登州",
+                description: "苏轼短暂任职之地",
+                period: "late",
+                coordinates: [120.756667, 37.800000], // 山东蓬莱，真实地理坐标
+                events: [
+                    { year: "1085年", event: "任登州知州，到任不久便被召还入朝" }
+                ]
+            },
+            {
+                name: "定州",
+                description: "苏轼任边郡重镇知州之地",
+                period: "late",
+                coordinates: [114.995460, 38.516390], // 河北定州，真实地理坐标
+                events: [
+                    { year: "1093年", event: "任定州知州" }
+                ]
+            },
+            {
+                name: "惠州",
+                description: "苏轼贬谪之地",
+                period: "late",
+                coordinates: [114.412501, 23.079309], // 真实地理坐标
+                events: [
+                    { year: "1094年", event: "贬惠州安置" }
+                ]
+            },
+            {
+                name: "儋州",
+                description: "苏轼最远的贬谪之地，在此办学兴教",
+                period: "late",
+                coordinates: [109.511900, 19.520800], // 海南儋州，真实地理坐标
+                events: [
+                    { year: "1097年", event: "贬儋州安置，办学兴教" }
+                ]
+            },
+            {
+                name: "廉州",
+                description: "苏轼量移之地",
+                period: "late",
+                coordinates: [109.120000, 21.620000], // 广西合浦，真实地理坐标
+                events: [
+                    { year: "1100年", event: "量移廉州" }
+                ]
+            },
+            {
+                name: "常州",
+                description: "苏轼病逝之地",
+                period: "late",
+                coordinates: [119.983333, 31.783333], // 真实地理坐标
+                events: [
+                    { year: "1101年", event: "病逝于常州，享年66岁" }
+                ]
+            }
+        ];
+
+        // 路线数据
+        const routeData = [
+            {
+                start: "眉山",
+                end: "开封",
+                year: "1056年",
+                description: "首次出蜀赴京",
+                period: "early"
+            },
+            {
+                start: "开封",
+                end: "眉山",
+                year: "1057年",
+                description: "母亲病逝，返眉奔丧",
+                period: "early"
+            },
+            {
+                start: "眉山",
+                end: "开封",
+                year: "1059年",
+                description: "携家眷东出巫峡北上汴京",
+                period: "early"
+            },
+            {
+                start: "开封",
+                end: "凤翔",
+                year: "1061年",
+                description: "赴凤翔任签判",
+                period: "early"
+            },
+            {
+                start: "凤翔",
+                end: "开封",
+                year: "1065年",
+                description: "凤翔签判任满还朝",
+                period: "early"
+            },
+            {
+                start: "开封",
+                end: "眉山",
+                year: "1066年",
+                description: "扶父柩回眉安葬",
+                period: "early"
+            },
+            {
+                start: "眉山",
+                end: "开封",
+                year: "1068年",
+                description: "服丧期满，返京任职",
+                period: "early"
+            },
+            {
+                start: "开封",
+                end: "杭州",
+                year: "1071年",
+                description: "自请外放，任杭州通判",
+                period: "middle"
+            },
+            {
+                start: "杭州",
+                end: "密州",
+                year: "1074年",
+                description: "调任密州知州",
+                period: "middle"
+            },
+            {
+                start: "密州",
+                end: "徐州",
+                year: "1077年",
+                description: "调任徐州知州",
+                period: "middle"
+            },
+            {
+                start: "徐州",
+                end: "湖州",
+                year: "1079年",
+                description: "调任湖州知州",
+                period: "middle"
+            },
+            {
+                start: "湖州",
+                end: "开封",
+                year: "1079年",
+                description: "因'乌台诗案'被逮入京",
+                period: "middle"
+            },
+            {
+                start: "开封",
+                end: "黄州",
+                year: "1079年",
+                description: "贬黄州团练副使",
+                period: "middle"
+            },
+            {
+                start: "黄州",
+                end: "登州",
+                year: "1085年",
+                description: "任登州知州",
+                period: "late"
+            },
+            {
+                start: "登州",
+                end: "开封",
+                year: "1085年",
+                description: "被召还入朝",
+                period: "late"
+            },
+            {
+                start: "开封",
+                end: "杭州",
+                year: "1089年",
+                description: "外任杭州知州",
+                period: "late"
+            },
+            {
+                start: "杭州",
+                end: "开封",
+                year: "1092年",
+                description: "被召还入朝，任礼部尚书",
+                period: "late"
+            },
+            {
+                start: "开封",
+                end: "定州",
+                year: "1093年",
+                description: "任定州知州",
+                period: "late"
+            },
+            {
+                start: "定州",
+                end: "惠州",
+                year: "1094年",
+                description: "贬惠州安置",
+                period: "late"
+            },
+            {
+                start: "惠州",
+                end: "儋州",
+                year: "1097年",
+                description: "贬儋州安置",
+                period: "late"
+            },
+            {
+                start: "儋州",
+                end: "廉州",
+                year: "1100年",
+                description: "量移廉州",
+                period: "late"
+            },
+            {
+                start: "廉州",
+                end: "常州",
+                year: "1101年",
+                description: "北返，病逝于常州",
+                period: "late"
+            }
+        ];
+
+        // DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化时间轴
+            initTimeline();
+            
+            // 初始化代表作品
+            initWorks();
+            
+            // 初始化足迹地图
+            initMap();
+            
+            // 初始化筛选器事件
+            initFilters();
+        });
+
+        // 初始化时间轴
+        function initTimeline() {
+            const timelineEvents = document.getElementById('timeline-events');
+            timelineEvents.innerHTML = '';
+            
+            timelineData.forEach((event, index) => {
+                const eventCard = document.createElement('div');
+                eventCard.className = `event-card ${event.category}-card`;
+                eventCard.setAttribute('data-category', event.category);
+                eventCard.setAttribute('data-year', event.year);
+                
+                // 设置时间轴点的颜色
+                let dotColor = '';
+                switch(event.category) {
+                    case 'politics':
+                        dotColor = 'bg-politics';
+                        break;
+                    case 'poetry':
+                        dotColor = 'bg-poetry';
+                        break;
+                    case 'life':
+                        dotColor = 'bg-life';
+                        break;
+                    default:
+                        dotColor = 'bg-info';
+                }
+                
+                eventCard.innerHTML = `
+                    <div class="year-label">${event.year}</div>
+                    <div class="timeline-dot ${dotColor}"></div>
+                    <div class="event-content ${event.category}-content">
+                        <h3 class="text-xl font-bold mb-2">${event.title}</h3>
+                        <p class="mb-2">${event.description}</p>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fa fa-map-marker mr-2"></i>
+                            <span>${event.location}</span>
+                        </div>
+                    </div>
+                `;
+                
+                timelineEvents.appendChild(eventCard);
+                
+                // 添加点击事件
+                eventCard.addEventListener('click', function() {
+                    showEventDetails(event);
+                });
+            });
+        }
+
+        // 初始化代表作品
+        function initWorks() {
+            const worksContainer = document.getElementById('works-container');
+            worksContainer.innerHTML = '';
+            
+            // 扩展作品数据，添加完整内容
+            const extendedWorksData = worksData.map(work => {
+                // 根据作品标题添加完整内容
+                let fullContent = '';
+                switch(work.title) {
+                    case '《刑赏忠厚之至论》':
+                        fullContent = '尧、舜、禹、汤、文、武、成、康之际，何其爱民之深，忧民之切，而待天下以君子长者之道也。有一善，从而赏之，又从而咏歌嗟叹之，所以乐其始而勉其终。有一不善，从而罚之，又从而哀矜惩创之，所以弃其旧而开其新。故其吁俞之声，欢忻惨戚，见于虞、夏、商、周之书。成、康既没，穆王立，而周道始衰，然犹命其臣吕侯，而告之以祥刑。其言忧而不伤，威而不怒，慈爱而能断，恻然有哀怜无辜之心，故孔子犹有取焉。<br><br>《传》曰："赏疑从与，所以广恩也；罚疑从去，所以慎刑也。"当尧之时，皋陶为士。将杀人，皋陶曰"杀之"三，尧曰"宥之"三。故天下畏皋陶执法之坚，而乐尧用刑之宽。四岳曰"鲧可用"，尧曰"不可，鲧方命圮族"，既而曰"试之"。何尧之不听皋陶之杀人，而从四岳之用鲧也？然则圣人之意，盖亦可见矣。<br><br>《书》曰："罪疑惟轻，功疑惟重。与其杀不辜，宁失不经。"呜呼，尽之矣。可以赏，可以无赏，赏之过乎仁；可以罚，可以无罚，罚之过乎义。过乎仁，不失为君子；过乎义，则流而入于忍人。故仁可过也，义不可过也。<br><br>古者赏不以爵禄，刑不以刀锯。赏以爵禄，是赏之道行于爵禄之所加，而不行于爵禄之所不加也。刑以刀锯，是刑之威施于刀锯之所及，而不施于刀锯之所不及也。先王知天下之善不胜赏，而爵禄不足以劝也；知天下之恶不胜刑，而刀锯不足以裁也。是故疑则举而归之于仁，以君子长者之道待天下，使天下相率而归于君子长者之道。故曰：忠厚之至也。<br><br>《诗》曰："君子如祉，乱庶遄已。君子如怒，乱庶遄沮。"夫君子之已乱，岂有异术哉？时其喜怒，而无失乎仁而已矣。《春秋》之义，立法贵严，而责人贵宽。因其褒贬之义，以制赏罚，亦忠厚之至也。';
+                        break;
+                    case '《和子由渑池怀旧》':
+                        fullContent = '人生到处知何似，应似飞鸿踏雪泥。<br>泥上偶然留指爪，鸿飞那复计东西。<br>老僧已死成新塔，坏壁无由见旧题。<br>往日崎岖还记否，路长人困蹇驴嘶。';
+                        break;
+                    case '《饮湖上初晴后雨》':
+                        fullContent = '水光潋滟晴方好，山色空蒙雨亦奇。<br>欲把西湖比西子，淡妆浓抹总相宜。';
+                        break;
+                    case '《江城子·记梦》':
+                        fullContent = '十年生死两茫茫，不思量，自难忘。千里孤坟，无处话凄凉。纵使相逢应不识，尘满面，鬓如霜。<br><br>夜来幽梦忽还乡，小轩窗，正梳妆。相顾无言，惟有泪千行。料得年年肠断处，明月夜，短松冈。';
+                        break;
+                    case '《江城子·密州出猎》':
+                        fullContent = '老夫聊发少年狂，左牵黄，右擎苍，锦帽貂裘，千骑卷平冈。为报倾城随太守，亲射虎，看孙郎。<br><br>酒酣胸胆尚开张，鬓微霜，又何妨？持节云中，何日遣冯唐？会挽雕弓如满月，西北望，射天狼。';
+                        break;
+                    case '《水调歌头·明月几时有》':
+                        fullContent = '明月几时有？把酒问青天。不知天上宫阙，今夕是何年。我欲乘风归去，又恐琼楼玉宇，高处不胜寒。起舞弄清影，何似在人间？<br><br>转朱阁，低绮户，照无眠。不应有恨，何事长向别时圆？人有悲欢离合，月有阴晴圆缺，此事古难全。但愿人长久，千里共婵娟。';
+                        break;
+                    case '《寒食诗》':
+                        fullContent = '自我来黄州，已过三寒食。年年欲惜春，春去不容惜。今年又苦雨，两月秋萧瑟。卧闻海棠花，泥污燕支雪。暗中偷负去，夜半真有力。何殊病少年，病起头已白。<br><br>春江欲入户，雨势来不已。小屋如渔舟，蒙蒙水云里。空庖煮寒菜，破灶烧湿苇。那知是寒食，但见乌衔纸。君门深九重，坟墓在万里。也拟哭途穷，死灰吹不起。';
+                        break;
+                    case '《前赤壁赋》':
+                        fullContent = '壬戌之秋，七月既望，苏子与客泛舟游于赤壁之下。清风徐来，水波不兴。举酒属客，诵明月之诗，歌窈窕之章。少焉，月出于东山之上，徘徊于斗牛之间。白露横江，水光接天。纵一苇之所如，凌万顷之茫然。浩浩乎如冯虚御风，而不知其所止；飘飘乎如遗世独立，羽化而登仙。<br><br>于是饮酒乐甚，扣舷而歌之。歌曰："桂棹兮兰桨，击空明兮溯流光。渺渺兮予怀，望美人兮天一方。"客有吹洞箫者，倚歌而和之。其声呜呜然，如怨如慕，如泣如诉，余音袅袅，不绝如缕。舞幽壑之潜蛟，泣孤舟之嫠妇。<br><br>苏子愀然，正襟危坐而问客曰："何为其然也？"客曰："月明星稀，乌鹊南飞，此非曹孟德之诗乎？西望夏口，东望武昌，山川相缪，郁乎苍苍，此非孟德之困于周郎者乎？方其破荆州，下江陵，顺流而东也，舳舻千里，旌旗蔽空，酾酒临江，横槊赋诗，固一世之雄也，而今安在哉？况吾与子渔樵于江渚之上，侣鱼虾而友麋鹿，驾一叶之扁舟，举匏樽以相属。寄蜉蝣于天地，渺沧海之一粟。哀吾生之须臾，羡长江之无穷。挟飞仙以遨游，抱明月而长终。知不可乎骤得，托遗响于悲风。"<br><br>苏子曰："客亦知夫水与月乎？逝者如斯，而未尝往也；盈虚者如彼，而卒莫消长也。盖将自其变者而观之，则天地曾不能以一瞬；自其不变者而观之，则物与我皆无尽也，而又何羡乎！且夫天地之间，物各有主,苟非吾之所有，虽一毫而莫取。惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。"<br><br>客喜而笑，洗盏更酌。肴核既尽，杯盘狼籍。相与枕藉乎舟中，不知东方之既白。';
+                        break;
+                    case '《后赤壁赋》':
+                        fullContent = '是岁十月之望，步自雪堂，将归于临皋。二客从予过黄泥之坂。霜露既降，木叶尽脱，人影在地，仰见明月，顾而乐之，行歌相答。<br><br>已而叹曰："有客无酒，有酒无肴，月白风清，如此良夜何！"客曰："今者薄暮，举网得鱼，巨口细鳞，状如松江之鲈。顾安所得酒乎？"归而谋诸妇。妇曰："我有斗酒，藏之久矣，以待子不时之需。"<br><br>于是携酒与鱼，复游于赤壁之下。江流有声，断岸千尺；山高月小，水落石出。曾日月之几何，而江山不可复识矣。予乃摄衣而上，履巉岩，披蒙茸，踞虎豹，登虬龙，攀栖鹘之危巢，俯冯夷之幽宫。盖二客不能从焉。划然长啸，草木震动，山鸣谷应，风起水涌。予亦悄然而悲，肃然而恐，凛乎其不可留也。反而登舟，放乎中流，听其所止而休焉。<br><br>时夜将半，四顾寂寥。适有孤鹤，横江东来。翅如车轮，玄裳缟衣，戛然长鸣，掠予舟而西也。须臾客去，予亦就睡。梦一道士，羽衣蹁跹，过临皋之下，揖予而言曰："赤壁之游乐乎？"问其姓名，俯而不答。"呜呼！噫嘻！我知之矣。畴昔之夜，飞鸣而过我者，非子也邪？"道士顾笑，予亦惊寤。开户视之，不见其处。';
+                        break;
+                    case '《念奴娇·赤壁怀古》':
+                        fullContent = '大江东去，浪淘尽，千古风流人物。故垒西边，人道是，三国周郎赤壁。乱石穿空，惊涛拍岸，卷起千堆雪。江山如画，一时多少豪杰。<br><br>遥想公瑾当年，小乔初嫁了，雄姿英发。羽扇纶巾，谈笑间，樯橹灰飞烟灭。故国神游，多情应笑我，早生华发。人生如梦，一尊还酹江月。';
+                        break;
+                    case '《定风波·莫听穿林打叶声》':
+                        fullContent = '莫听穿林打叶声，何妨吟啸且徐行。竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。<br><br>料峭春风吹酒醒，微冷，山头斜照却相迎。回首向来萧瑟处，归去，也无风雨也无晴。';
+                        break;
+                    case '《记承天寺夜游》':
+                        fullContent = '元丰六年十月十二日夜，解衣欲睡，月色入户，欣然起行。念无与为乐者，遂至承天寺寻张怀民。怀民亦未寝，相与步于中庭。庭下如积水空明，水中藻荇交横，盖竹柏影也。何夜无月？何处无竹柏？但少闲人如吾两人者耳。';
+                        break;
+                    default:
+                        fullContent = work.excerpt;
+                }
+                
+                return {
+                    ...work,
+                    fullContent: fullContent
+                };
+            });
+            
+            extendedWorksData.forEach(work => {
+                const workCard = document.createElement('div');
+                workCard.className = `bg-white bg-opacity-80 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl work-card cursor-pointer`;
+                workCard.setAttribute('data-type', work.type);
+                workCard.setAttribute('data-id', work.title);
+                
+                let typeLabel = '';
+                let typeColor = '';
+                switch(work.type) {
+                    case 'poem':
+                        typeLabel = '诗词';
+                        typeColor = 'bg-poetry';
+                        break;
+                    case 'prose':
+                        typeLabel = '散文';
+                        typeColor = 'bg-info';
+                        break;
+                    default:
+                        typeLabel = '其他';
+                        typeColor = 'bg-gray-500';
+                }
+                
+                workCard.innerHTML = `
+                    <!-- 作品图片 -->
+                    <div class="h-48 overflow-hidden">
+                        <img src="${work.image}" alt="${work.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold">${work.title}</h3>
+                            <span class="px-2 py-1 text-xs text-white rounded-full ${typeColor}">${typeLabel}</span>
+                        </div>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <i class="fa fa-calendar mr-1"></i> ${work.year} | 
+                            <i class="fa fa-map-marker mr-1"></i> ${work.location}
+                        </div>
+                        <p class="mb-4">${work.description}</p>
+                        <div class="border-l-4 border-primary pl-4 py-2 bg-gray-50">
+                            <p class="poem-highlight">"${work.excerpt}"</p>
+                        </div>
+                        <div class="mt-4 text-right">
+                            <button class="text-primary hover:text-opacity-80 flex items-center ml-auto" onclick="toggleWorkDetails('${work.title}')">
+                                <span>查看全文</span>
+                                <i class="fa fa-chevron-down ml-1 transition-transform duration-300" id="chevron-${work.title.replace(/[《》]/g, '')}"></i>
+                            </button>
+                        </div>
+                        <!-- 完整内容，默认隐藏 -->
+                        <div id="full-content-${work.title.replace(/[《》]/g, '')}" class="mt-4 hidden">
+                            <div class="border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-bold mb-2">全文</h4>
+                                <div class="prose max-w-none poem-highlight whitespace-pre-line">${work.fullContent}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                worksContainer.appendChild(workCard);
+                
+                // 添加点击事件
+                workCard.addEventListener('click', function(e) {
+                    // 如果点击的是查看全文按钮或其内部元素，不执行卡片点击事件
+                    if (e.target.closest('button') || e.target.closest('button *')) {
+                        return;
+                    }
+                    toggleWorkDetails(work.title);
+                });
+            });
+        }
+        
+        // 切换作品详情显示/隐藏
+        function toggleWorkDetails(workTitle) {
+            const titleWithoutSymbols = workTitle.replace(/[《》]/g, '');
+            const fullContentDiv = document.getElementById(`full-content-${titleWithoutSymbols}`);
+            const chevron = document.getElementById(`chevron-${titleWithoutSymbols}`);
+            
+            if (fullContentDiv.classList.contains('hidden')) {
+                fullContentDiv.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                fullContentDiv.classList.add('hidden');
+                chevron.style.transform = 'rotate(0)';
+            }
+        }
+
+        // 初始化足迹地图（使用Leaflet）
+        let map;
+        let markers = {};
+        let routes = [];
+        
+        function initMap() {
+            const mapElement = document.getElementById('map');
+            const locationTimeline = document.getElementById('location-timeline');
+            
+            // 清空地点时间轴
+            locationTimeline.innerHTML = '';
+            
+            // 初始化地图
+            if (map) {
+                map.remove(); // 清除之前的地图实例
+            }
+            
+            map = L.map('map').setView([35.86166, 104.195397], 5); // 中国中心位置
+            
+            // 添加地图图层
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(map);
+            
+            // 清除之前的标记和路线
+            markers = {};
+            routes.forEach(route => map.removeLayer(route));
+            routes = [];
+            
+            // 创建自定义图标
+            function createCustomIcon(period) {
+                let color = '#3498DB'; // 默认颜色
+                switch(period) {
+                    case 'early':
+                        color = '#1ABC9C'; // info
+                        break;
+                    case 'middle':
+                        color = '#F39C12'; // warning
+                        break;
+                    case 'late':
+                        color = '#E74C3C'; // danger
+                        break;
+                }
+                
+                return L.divIcon({
+                    className: 'custom-map-marker',
+                    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>`,
+                    iconSize: [16, 16],
+                    iconAnchor: [8, 8]
+                });
+            }
+            
+            // 创建地点标记
+            locationData.forEach(location => {
+                // 创建地图标记
+                const icon = createCustomIcon(location.period);
+                const marker = L.marker(location.coordinates, {icon: icon}).addTo(map);
+                
+                // 添加弹出信息
+                marker.bindPopup(`
+                    <div class="p-2">
+                        <h3 class="font-bold text-lg">${location.name}</h3>
+                        <p class="text-sm text-gray-600">${location.description}</p>
+                        <div class="mt-2 text-xs">
+                            <span class="font-bold">时期：</span>
+                            ${location.period === 'early' ? '早期 (1037-1071)' : 
+                              location.period === 'middle' ? '中期 (1071-1089)' : 
+                              location.period === 'late' ? '晚期 (1089-1101)' : '全部时期'}
+                        </div>
+                    </div>
+                `);
+                
+                // 点击标记显示详情
+                marker.on('click', function() {
+                    showLocationDetails(location);
+                });
+                
+                // 存储标记引用
+                markers[location.name] = marker;
+                
+                // 创建地点时间轴项
+                let periodColor = '';
+                switch(location.period) {
+                    case 'early':
+                        periodColor = 'border-info';
+                        break;
+                    case 'middle':
+                        periodColor = 'border-warning';
+                        break;
+                    case 'late':
+                        periodColor = 'border-danger';
+                        break;
+                    default:
+                        periodColor = 'border-primary';
+                }
+                
+                const locationItem = document.createElement('div');
+                locationItem.className = `p-4 border-l-4 ${periodColor} mb-4 ${location.period}-location cursor-pointer hover:bg-gray-50 transition-colors`;
+                locationItem.setAttribute('data-period', location.period);
+                locationItem.setAttribute('data-location', location.name);
+                
+                locationItem.innerHTML = `
+                    <h4 class="text-lg font-bold">${location.name}</h4>
+                    <p class="text-gray-600 mb-2">${location.description}</p>
+                    <div class="space-y-1">
+                        ${location.events.map(event => `
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium w-20">${event.year}</span>
+                                <span>${event.event}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // 点击时间轴项在地图上显示对应位置
+                locationItem.addEventListener('click', function() {
+                    const locationName = this.getAttribute('data-location');
+                    if (markers[locationName]) {
+                        map.setView(location.coordinates, 7);
+                        markers[locationName].openPopup();
+                    }
+                });
+                
+                locationTimeline.appendChild(locationItem);
+            });
+            
+            // 创建路线
+            createRoutes();
+            
+            // 应用当前筛选条件
+            const activePeriodBtn = document.querySelector('.map-period-btn.active');
+            if (activePeriodBtn) {
+                filterMapByPeriod(activePeriodBtn.getAttribute('data-period'));
+            }
+        }
+
+        // 创建路线
+        function createRoutes() {
+            routeData.forEach(route => {
+                const startLocation = locationData.find(loc => loc.name === route.start);
+                const endLocation = locationData.find(loc => loc.name === route.end);
+                
+                if (startLocation && endLocation && markers[route.start] && markers[route.end]) {
+                    // 设置路线颜色
+                    let routeColor = '#3498DB'; // 默认颜色
+                    switch(route.period) {
+                        case 'early':
+                            routeColor = '#1ABC9C'; // info
+                            break;
+                        case 'middle':
+                            routeColor = '#F39C12'; // warning
+                            break;
+                        case 'late':
+                            routeColor = '#E74C3C'; // danger
+                            break;
+                    }
+                    
+                    // 创建路线
+                    const polyline = L.polyline(
+                        [startLocation.coordinates, endLocation.coordinates], 
+                        {
+                            color: routeColor,
+                            weight: 3,
+                            opacity: 0.7,
+                            dashArray: '5, 5',
+                            lineJoin: 'round'
+                        }
+                    ).addTo(map);
+                    
+                    // 添加路线弹出信息
+                    polyline.bindTooltip(`
+                        <div class="p-2">
+                            <div class="font-bold">${route.year}</div>
+                            <div class="text-sm">${route.description}</div>
+                            <div class="text-xs mt-1">${route.start} → ${route.end}</div>
+                        </div>
+                    `, {
+                        sticky: true,
+                        direction: 'top'
+                    });
+                    
+                    // 存储路线引用
+                    routes.push(polyline);
+                    
+                    // 添加路线动画效果
+                    animateRoute(polyline);
+                }
+            });
+        }
+        
+        // 路线动画效果
+        function animateRoute(polyline) {
+            // 获取路线点
+            const points = polyline.getLatLngs();
+            if (points.length < 2) return;
+            
+            // 创建动画点
+            const animateMarker = L.divIcon({
+                className: 'route-animate-marker',
+                html: '<div style="background-color: white; width: 8px; height: 8px; border-radius: 50%; border: 2px solid #3498DB; box-shadow: 0 0 4px rgba(0,0,0,0.5);"></div>',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6]
+            });
+            
+            const marker = L.marker(points[0], {icon: animateMarker}).addTo(map);
+            
+            // 动画函数
+            let index = 0;
+            const duration = 3000; // 动画持续时间（毫秒）
+            const interval = 50; // 动画间隔（毫秒）
+            const steps = duration / interval;
+            const totalDistance = polyline._path.getTotalLength();
+            
+            function animate() {
+                index += 1 / steps;
+                if (index > 1) {
+                    index = 0;
+                }
+                
+                const point = polyline._path.getPointAtLength(totalDistance * index);
+                marker.setLatLng(map.containerPointToLatLng([point.x, point.y]));
+                requestAnimationFrame(animate);
+            }
+            
+            // 开始动画
+            animate();
+        }
+        
+        // 根据时期筛选地图
+        function filterMapByPeriod(period) {
+            // 遍历所有标记
+            Object.keys(markers).forEach(name => {
+                const marker = markers[name];
+                const location = locationData.find(loc => loc.name === name);
+                
+                if (period === 'all' || location.period === period) {
+                    marker.addTo(map);
+                } else {
+                    map.removeLayer(marker);
+                }
+            });
+            
+            // 遍历所有路线
+            routes.forEach((route, index) => {
+                const routeDataItem = routeData[index];
+                
+                if (period === 'all' || routeDataItem.period === period) {
+                    route.addTo(map);
+                } else {
+                    map.removeLayer(route);
+                }
+            });
+            
+            // 调整地图视图
+            if (period !== 'all') {
+                // 找到当前时期的所有位置
+                const periodLocations = locationData.filter(loc => loc.period === period);
+                if (periodLocations.length > 0) {
+                    // 创建边界框
+                    const bounds = L.latLngBounds(periodLocations.map(loc => loc.coordinates));
+                    map.fitBounds(bounds, {padding: [50, 50]});
+                }
+            } else {
+                // 显示所有位置
+                map.setView([35.86166, 104.195397], 5);
+            }
+        }
+
+        // 初始化筛选器事件
+        function initFilters() {
+            // 时间轴筛选器
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                        b.classList.add('bg-opacity-20');
+                    });
+                    
+                    // 添加当前按钮的active类
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-opacity-20');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 筛选事件
+                    const events = document.querySelectorAll('.event-card');
+                    events.forEach(event => {
+                        if (filter === 'all' || event.getAttribute('data-category') === filter) {
+                            event.style.display = 'block';
+                        } else {
+                            event.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 作品筛选器
+            const workFilterBtns = document.querySelectorAll('.work-filter-btn');
+            workFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    workFilterBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                        b.classList.add('bg-opacity-20');
+                    });
+                    
+                    // 添加当前按钮的active类
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-opacity-20');
+                    
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 筛选作品
+                    const works = document.querySelectorAll('.work-card');
+                    works.forEach(work => {
+                        if (filter === 'all' || work.getAttribute('data-type') === filter) {
+                            work.style.display = 'block';
+                        } else {
+                            work.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // 地图时期筛选器
+            const mapPeriodBtns = document.querySelectorAll('.map-period-btn');
+            mapPeriodBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    mapPeriodBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-primary', 'text-white');
+                        b.classList.add('bg-opacity-20');
+                    });
+                    
+                    // 添加当前按钮的active类
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-opacity-20');
+                    
+                    const period = this.getAttribute('data-period');
+                    
+                    // 使用新的筛选函数
+                    filterMapByPeriod(period);
+                    
+                    // 筛选地点时间轴
+                    const locations = document.querySelectorAll('#location-timeline > div');
+                    locations.forEach(location => {
+                        if (period === 'all' || location.getAttribute('data-period') === period) {
+                            location.style.display = 'block';
+                        } else {
+                            location.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        // 切换标签页
+        function switchTab(tabId) {
+            // 隐藏所有内容
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 显示选中的内容
+            const selectedContent = document.getElementById(`${tabId}-content`);
+            selectedContent.classList.add('active');
+            
+            // 移除所有标签按钮的active类
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // 添加选中标签按钮的active类
+            const selectedButton = document.getElementById(`${tabId}-tab`);
+            selectedButton.classList.add('active');
+            
+            // 如果切换到地图标签，重新初始化地图
+            if (tabId === 'map') {
+                initMap();
+            }
+        }
+
+        // 显示事件详情
+        function showEventDetails(event) {
+            // 创建模态框
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            
+            // 设置内容
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h2 class="text-2xl font-bold">${event.title}</h2>
+                            <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                                <i class="fa fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="text-gray-600 mb-4">
+                            <i class="fa fa-calendar mr-2"></i> ${event.year} | 
+                            <i class="fa fa-map-marker mr-2"></i> ${event.location}
+                        </div>
+                        <p class="mb-4">${event.description}</p>
+                        
+                        <!-- 相关作品 -->
+                        ${getRelatedWorks(event.year, event.location).length > 0 ? `
+                            <div class="mt-6">
+                                <h3 class="text-xl font-bold mb-4">相关作品</h3>
+                                <div class="space-y-4">
+                                    ${getRelatedWorks(event.year, event.location).map(work => `
+                                        <div class="border-l-4 border-primary pl-4 py-2 bg-gray-50">
+                                            <h4 class="font-bold">${work.title}</h4>
+                                            <p class="text-sm text-gray-600">${work.year} | ${work.location}</p>
+                                            <p class="poem-highlight mt-2">"${work.excerpt}"</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button class="px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90" onclick="closeModal()">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 显示地点详情
+        function showLocationDetails(location) {
+            // 创建模态框
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            
+            // 设置内容
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h2 class="text-2xl font-bold">${location.name}</h2>
+                            <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                                <i class="fa fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <p class="mb-4">${location.description}</p>
+                        
+                        <!-- 事件列表 -->
+                        <div class="mt-4">
+                            <h3 class="text-xl font-bold mb-4">重要事件</h3>
+                            <div class="space-y-2">
+                                ${location.events.map(event => `
+                                    <div class="flex items-center p-3 bg-gray-50 rounded">
+                                        <span class="font-bold w-20">${event.year}</span>
+                                        <span>${event.event}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <!-- 相关作品 -->
+                        ${getRelatedWorksByLocation(location.name).length > 0 ? `
+                            <div class="mt-6">
+                                <h3 class="text-xl font-bold mb-4">相关作品</h3>
+                                <div class="space-y-4">
+                                    ${getRelatedWorksByLocation(location.name).map(work => `
+                                        <div class="border-l-4 border-primary pl-4 py-2 bg-gray-50">
+                                            <h4 class="font-bold">${work.title}</h4>
+                                            <p class="text-sm text-gray-600">${work.year}</p>
+                                            <p class="poem-highlight mt-2">"${work.excerpt}"</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button class="px-4 py-2 bg-primary text-white rounded hover:bg-opacity-90" onclick="closeModal()">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            const modal = document.querySelector('.fixed.inset-0.bg-black.bg-opacity-50');
+            if (modal) {
+                modal.remove();
+                document.body.style.overflow = '';
+            }
+        }
+
+        // 获取相关作品
+        function getRelatedWorks(year, location) {
+            return worksData.filter(work => {
+                return work.year === year || work.location === location;
+            });
+        }
+
+        // 根据地点获取相关作品
+        function getRelatedWorksByLocation(location) {
+            return worksData.filter(work => {
+                return work.location === location;
+            });
+        }
+    </script>
+</body>
+</html>
